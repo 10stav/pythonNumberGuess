@@ -20,7 +20,9 @@ if not st.session_state.gameOver:
     if userGuess:
         try:
             userGuess = int(userGuess)  # Convert input to an integer
-            if userGuess > st.session_state.hiddenNumber:
+            if userGuess < 1 or userGuess > 10:  # Check if the guess is out of range
+                st.session_state.message = "Invalid guess! Please enter a number between 1 and 10."
+            elif userGuess > st.session_state.hiddenNumber:
                 st.session_state.message = "Your guess is too high!"
             elif userGuess < st.session_state.hiddenNumber:
                 st.session_state.message = "Your guess is too low!"
@@ -28,7 +30,7 @@ if not st.session_state.gameOver:
                 st.session_state.message = f"You guessed correctly! The number was {st.session_state.hiddenNumber}."
                 st.session_state.gameOver = True
         except ValueError:
-            st.session_state.message = "Please enter a valid number!"
+            st.session_state.message = "Invalid input! Please enter a valid number."
 
 # Display message to the user
 st.write(st.session_state.message)
@@ -36,3 +38,9 @@ st.write(st.session_state.message)
 # End the game
 if st.session_state.gameOver:
     st.write("Game Over! Reload the page to play again.")
+
+# Restart the game button
+if st.button("Restart Game"):
+    st.session_state.hiddenNumber = random.randint(1, 11)
+    st.session_state.gameOver = False
+    st.session_state.message = ""
