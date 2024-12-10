@@ -1,9 +1,15 @@
 import streamlit as st
 from numpy import random
 
+# Function to reset the game
+def restart_game():
+    st.session_state.hiddenNumber = random.randint(1, 11)
+    st.session_state.gameOver = False
+    st.session_state.message = ""
+
 # Initialize game state
 if "hiddenNumber" not in st.session_state:
-    st.session_state.hiddenNumber = random.randint(1, 11)  # Generate random number once
+    st.session_state.hiddenNumber = random.randint(1, 11)
 if "gameOver" not in st.session_state:
     st.session_state.gameOver = False
 if "message" not in st.session_state:
@@ -12,6 +18,10 @@ if "message" not in st.session_state:
 # Display game title and instructions
 st.title("Guess the Number Game!")
 st.write("I'm thinking of a number between 1 and 10. Can you guess what it is?")
+
+# Restart game button
+if st.button("Restart Game"):
+    restart_game()
 
 # Take user input
 if not st.session_state.gameOver:
@@ -37,10 +47,4 @@ st.write(st.session_state.message)
 
 # End the game
 if st.session_state.gameOver:
-    st.write("Game Over! Reload the page to play again.")
-
-# Restart the game button
-if st.button("Restart Game"):
-    st.session_state.hiddenNumber = random.randint(1, 11)
-    st.session_state.gameOver = False
-    st.session_state.message = ""
+    st.write("Game Over! Press 'Restart Game' to play again.")
