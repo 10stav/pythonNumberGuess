@@ -6,6 +6,7 @@ def restart_game():
     st.session_state.hiddenNumber = random.randint(1, 11)
     st.session_state.gameOver = False
     st.session_state.message = ""
+    st.session_state.userGuess = ""
 
 # Initialize game state
 if "hiddenNumber" not in st.session_state:
@@ -14,22 +15,21 @@ if "gameOver" not in st.session_state:
     st.session_state.gameOver = False
 if "message" not in st.session_state:
     st.session_state.message = ""
+if "userGuess" not in st.session_state:
+    st.session_state.userGuess = ""
 
 # Display game title and instructions
 st.title("Guess the Number Game!")
 st.write("I'm thinking of a number between 1 and 10. Can you guess what it is?")
 
-# Restart game button
-if st.button("Restart Game"):
-    restart_game()
-
-# Take user input
+# Game logic
 if not st.session_state.gameOver:
-    userGuess = st.text_input("Enter your guess:")
+    # Show the input box if the game is not over
+    st.session_state.userGuess = st.text_input("Enter your guess:")
 
-    if userGuess:
+    if st.session_state.userGuess:
         try:
-            userGuess = int(userGuess)  # Convert input to an integer
+            userGuess = int(st.session_state.userGuess)  # Convert input to an integer
             if userGuess < 1 or userGuess > 10:  # Check if the guess is out of range
                 st.session_state.message = "Invalid guess! Please enter a number between 1 and 10."
             elif userGuess > st.session_state.hiddenNumber:
@@ -45,6 +45,7 @@ if not st.session_state.gameOver:
 # Display message to the user
 st.write(st.session_state.message)
 
-# End the game
+# Show "Restart Game" button when the game is over
 if st.session_state.gameOver:
-    st.write("Game Over! Press 'Restart Game' to play again.")
+    if st.button("Restart Game"):
+        restart_game()
