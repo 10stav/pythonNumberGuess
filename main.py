@@ -1,10 +1,9 @@
 import streamlit as st
 from numpy import random
 
-# Generate a random number between 1 and 10
-hiddenNumber = random.randint(1, 11)
-
 # Initialize game state
+if "hiddenNumber" not in st.session_state:
+    st.session_state.hiddenNumber = random.randint(1, 11)  # Generate random number once
 if "gameOver" not in st.session_state:
     st.session_state.gameOver = False
 if "message" not in st.session_state:
@@ -21,12 +20,12 @@ if not st.session_state.gameOver:
     if userGuess:
         try:
             userGuess = int(userGuess)  # Convert input to an integer
-            if userGuess > hiddenNumber:
+            if userGuess > st.session_state.hiddenNumber:
                 st.session_state.message = "Your guess is too high!"
-            elif userGuess < hiddenNumber:
+            elif userGuess < st.session_state.hiddenNumber:
                 st.session_state.message = "Your guess is too low!"
-            elif userGuess == hiddenNumber:
-                st.session_state.message = f"You guessed correctly! The number was {hiddenNumber}."
+            elif userGuess == st.session_state.hiddenNumber:
+                st.session_state.message = f"You guessed correctly! The number was {st.session_state.hiddenNumber}."
                 st.session_state.gameOver = True
         except ValueError:
             st.session_state.message = "Please enter a valid number!"
